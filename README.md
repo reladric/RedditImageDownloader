@@ -1,4 +1,4 @@
-# rdownloader
+# RedditImageDownloader
 Downloads Images linked in any subreddtt to a local location
 
 * Currently supports only imgur
