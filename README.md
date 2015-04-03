@@ -1,9 +1,9 @@
 # RedditImageDownloader
 Downloads Images linked in any subreddtt to a local location
-
+Run at a regular interval to keep getting the newer images in any selected subreddit 
 * Currently supports only imgur
-* Respects the reddits API rules. (Might be 'err'ing on the side of safety)
-* Uses MySQL to 
+* Respects the reddit's API rules. (Might be 'err'ing on the side of safety)
+* Uses MySQL to 'bookmark' posts until which download is completed
 * Loads the subreddits to scan from a ini file
 # Requirements
 * Developed for Python 3.4.x+
