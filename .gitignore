@@ -1,0 +1,15 @@
+Downloads/
+*.py~
+reddit/*.py~
+redutil/*/py~
+hitter/*/py~
+getter/*/py~
+model/*/py~
+switcher/*/py~
+reddit/__pycache__
+redutil/__pycache__
+hitter/__pycache__
+getter/__pycache__
+model/__pycache__
+switcher/__pycache__
+logs/*.log
