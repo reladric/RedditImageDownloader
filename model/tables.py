@@ -11,7 +11,7 @@ class Downloads(Base):
     totalDownloads=Column(Integer)
     newFinderKey=Column(String(30))
     oldFinderKey=Column(String(30))
-    latestDate=Column(TIMESTAMP,server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    latestDate=Column(TIMESTAMP)
 
 class ErrorLog(Base):
     __tablename__='errorLog'
@@ -19,5 +19,5 @@ class ErrorLog(Base):
     failedItemName=Column(String(100),primary_key=True)
     failReason=Column(String(100))
     retries=Column(Integer)
-    failTime=Column(TIMESTAMP,server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    failTime=Column(TIMESTAMP)
     

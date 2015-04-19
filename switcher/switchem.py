@@ -5,6 +5,8 @@ from redutil.readem import ConfigReader
 import threading
 import queue
 import logging
+import datetime
+import time
 class Switcher:
     def __init__(self,__basepath,__initFile):
         logger = logging.getLogger('controller')
@@ -74,6 +76,7 @@ class Switcher:
             logger.debug("Waiting for downloads to complete")
             self.downloadQueue.join()
             subreddit.totalDownloads+=queuedCount-self.errorQueue.qsize()
+            subreddit.latestDate=datetime.datetime.fromtimestamp(time.time())
             while not self.errorQueue.empty():
                 try:
                     self.db.write_row(self.errorQueue.get())
@@ -105,6 +108,7 @@ class Switcher:
             logger.debug("Waiting for downloads to complete")
             self.downloadQueue.join()
             subreddit.totalDownloads+=queuedCount-self.errorQueue.qsize()
+            subreddit.latestDate=datetime.datetime.fromtimestamp(time.time())
             while not self.errorQueue.empty():
                 try:
                     self.db.write_row(self.errorQueue.get())
@@ -116,13 +120,14 @@ class Switcher:
         self.stopFlag.set()
                     
     def load_all_subreddits(self):
+        logger = logging.getLogger('controller')
         tosubreddits=SubscribedSubReddits()
         tosubreddits=self.cfreader.readParam(self.basepath+"\\"+self.initFile,tosubreddits)
         exsubreddits=SubscribedSubReddits()
         exsubreddits.subreddits=self.db.read_all_downloads()
-        print ("About to load subreddits")
+        logger.debug ("About to load subreddits")
         for exsub in exsubreddits.subreddits:
-            print ("Validating existing subreddits")
+            logger.debug ("Validating existing subreddits")
             existFlag=0
             for tosub in tosubreddits.subreddits:
                 if tosub.subredditName == exsub.subredditName:
@@ -131,7 +136,7 @@ class Switcher:
             if existFlag == 0:
                 self.db.delete_row(exsub)
         for tosub in tosubreddits.subreddits:
-            print("Loading new subreddits")
+            logger.debug("Loading new subreddits")
             existFlag=0
             for exsub in exsubreddits.subreddits:
                 if tosub.subredditName == exsub.subredditName:

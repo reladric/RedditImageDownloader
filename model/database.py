@@ -6,6 +6,7 @@ from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm import sessionmaker
 from configparser import ConfigParser
 import model.tables
+import logging
 from model.tables import Downloads,ErrorLog
 
 class DBSpeaker:
@@ -19,12 +20,13 @@ class DBSpeaker:
         self.dbparam=cfreader.readParam(basepath+"\\"+initFile,self.dbparam)
         self.status=1
 
+
     def read_db_settings(self, basepath,initFile):
         configreader=ConfigParser()
     
     def setup_database(self):
         try :
-            self.engine.execute("CREATE DATABASE IF NOT EXISTS "+ self.dbparam.database)
+            #self.engine.execute("CREATE DATABASE IF NOT EXISTS "+ self.dbparam.database)
             self.status=3
         except DatabaseError as e:
             messageString=e.orig
@@ -35,7 +37,7 @@ class DBSpeaker:
             else:
                 self.status=-3
                 return self.status
-        self.url=URL(self.dbparam.driver,self.dbparam.user,self.dbparam.password,self.dbparam.hostname,self.dbparam.port,self.dbparam.database)
+    #self.url=URL(self.dbparam.driver,self.dbparam.database+".db")
         try:
             self.engine=create_engine(self.url)
         except DatabaseError as e:
@@ -53,29 +55,35 @@ class DBSpeaker:
         return self.status
         
     def connect_db(self):
-        self.url=URL(self.dbparam.driver,self.dbparam.user,self.dbparam.password,self.dbparam.hostname,self.dbparam.port)
+
+        self.url=URL(self.dbparam.driver,database=self.dbparam.database)
         try:
             self.engine = create_engine(self.url)
-        except :
+        except Exception as e:
             self.status=-2
-            print("Unable to connect to MySQL server")
         self.status=2
         
     def write_row(self, object):
-        print("Writing Someone")
+        logger = logging.getLogger('controller')
+        logger.debug("Writing Someone")
         try:
             self.session.add(object)
             self.session.commit()
         except InvalidRequestError as e:
-            print(e)
+            logger.debug(e)
+            return False
+        return True
 
     def delete_row(self,object):
-        print("Deleting someone")
+        logger = logging.getLogger('controller')
+        logger.debug("Deleting someone")
         try:
             self.session.delete(object)
             self.session.commit()            
         except InvalidRequestError as e:
-            print(e)
+            logger.debug(e)
+            return False
+        return True
 
     def read_all_downloads(self):
         query=self.session.query(Downloads)

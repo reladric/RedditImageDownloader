@@ -81,7 +81,6 @@ class Getter(threading.Thread):
         logger.debug("From "+ url + "to " + file)
         try:
             if not os.path.exists(directory):
-                print (directory)
                 os.mkdir(directory)
         except OSError as e:
             logger.debug(e.strerror)
