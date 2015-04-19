@@ -23,5 +23,5 @@ Run at a regular interval to keep getting the newer images in any selected subre
 # Instructions
 * Edit the "info.ini" file with sqlite db file name (database), subreddits to download images from (comma separated list) and path where downloads need to be saved.
 * logs folder will have multiple debug level logs. Delete them often since they grow crazy fast
-
+* Run using command "python main.py" from base folder
 Suggestions regarding best practices as well as ideas are more than welcome
