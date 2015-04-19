@@ -5,6 +5,7 @@ Run at a regular interval to keep getting the newer images in any selected subre
 * Respects the reddit's API rules. (Might be 'err'ing on the side of safety)
 * Uses ~~MySQL~~ sqlite to 'bookmark' posts until which download is completed
 * Loads the subreddits to scan from a ini file
+
 # Requirements
 * Developed for Python 3.4.x+
 * Following modules are used :
